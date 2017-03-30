@@ -19,9 +19,14 @@
     }
 
     function loginUsers($username, $password) {
-      $query = $this->link->query("SELECT * FROM users WHERE username = '$username' AND password = '$password'");
-      $rowcount = $query->rowCount();
-      return $rowcount;
+      $db_password = $this->link->query("SELECT password FROM users WHERE username = '$username'")->fetchAll()[0]['password'];
+      if (password_verify($password, $db_password))
+      {
+        $query = $this->link->query("SELECT * FROM users WHERE username = '$username'");
+        $rowcount = $query->rowCount();
+        return $rowcount;
+      }
+      return 0;
     }
 
     function getUserInfo($username) {
