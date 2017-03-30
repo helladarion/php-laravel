@@ -17,6 +17,23 @@
       $counts = $query->rowcount();
       return $counts;
     }
+
+    function loginUsers($username, $password) {
+      $query = $this->link->query("SELECT * FROM users WHERE username = '$username' AND password = '$password'");
+      $rowcount = $query->rowCount();
+      return $rowcount;
+    }
+
+    function getUserInfo($username) {
+      $query = $this->link->query("SELECT * FROM users WHERE username = '$username'");
+      $rowcount = $query->rowCount();
+      if($rowcount == 1) {
+        $result = $query->fetchAll();
+        return $result;
+      } else {
+        return $rowcount;
+      }
+    }
   }
 
   //$users = new ManageUsers();
