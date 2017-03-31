@@ -19,6 +19,17 @@
         $( "#due_date" ).datepicker({
           dateFormat: "yy-mm-dd"
         });
+        $( "#seekbar" ).slider({
+        range: "max",
+        min: 0,
+        max: 100,
+        value: $( "#progress_value" ).val(),
+        slide: function( event, ui ) {
+          $( "#progress" ).html( ui.value + '%');
+          $( "#progress_value" ).val( ui.value );
+        }
+      });
+      $( "#progress_value" ).val( $( "#seekbar" ).slider( "value" ) );
       });
     </script>
 <div class="index-wrapper">
@@ -30,5 +41,6 @@
         <li role="navigation" <?php if($_GET['label'] == 'Inbox') { echo 'class="active"'; } ?>><a href="index.php?label=Inbox">Inbox</a></li>
         <li role="navigation" <?php if($_GET['label'] == 'Read Later') { echo 'class="active"'; } ?>><a href="index.php?label=Read Later">Read Later</a></li>
         <li role="navigation" <?php if($_GET['label'] == 'Important') { echo 'class="active"'; } ?>><a href="index.php?label=Important">Important</a></li>
+        <li role="navigation" <?php if($_GET['label'] == 'Logout') { echo 'class="active"'; } ?>><a href="logout.php">Logout</a></li>
       </ul>
     </div>

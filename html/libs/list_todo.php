@@ -14,15 +14,25 @@
   include_once('session.php');
   $init = new ManageTodo();
 
-
-  if(isset($_GET['label']))
+  if(isset($_GET['id']))
   {
-    $label = $_GET['label'];
-    $list_todo = $init->listTodo($session_name, $label);
+    $id = $_GET['id'];
+    $list_todo = $init->listIndTodo(array('id'=>$id), $session_name);
   }
   else
   {
-    $list_todo = $init->listTodo($session_name);
+    if(isset($_GET['label']))
+    {
+      $label = $_GET['label'];
+      $list_todo = $init->listTodo($session_name, $label);
+    }
+    else
+    {
+      $list_todo = $init->listTodo($session_name);
+    }
   }
+
+
+
   //print_r($list_todo);
  ?>

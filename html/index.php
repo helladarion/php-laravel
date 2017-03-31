@@ -1,6 +1,7 @@
       <?php
         include_once('statics/header.php');
         include_once('libs/list_todo.php');
+        include_once('libs/delete.php');
       ?>
           <div class="container-body">
             <div class="head-content">
@@ -11,8 +12,8 @@
                   <a href="addnew.php" class="btn btn-success">+ Add New</a>
               </div>
             </div>
-
-
+            <?php if(isset($error)) {echo '<div class="alert alert-danger" role="alert">'.$error.'</div>';} ?>
+            
             <table class="table table-striped">
               <thead>
                 <tr>
@@ -64,7 +65,8 @@
                                </div>
                              </div>
                            </td>
-                           <td> edit | delete </td>
+                           <td> <a href="edit.php?id=<?php echo $value['id'];?>" title="<?php echo $value['title'];?>">edit</a>|
+                             <a href="index.php?delete=<?php echo $value['id'];?>" title="<?php echo $value['title'];?>">delete</a> </td>
                            </tr>
                            <?php
                        }

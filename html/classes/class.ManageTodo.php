@@ -49,21 +49,35 @@
       return $counts;
     }
 
-    function editTodo($username, $id, $values)
+    function editTodo($username, $id, $title, $desc, $progress, $due_date, $label)
     {
-      $x=0;
-      foreach ($values as $key => $value) {
-          $query = $this->link->query("UPDATE todo SET $key = '$value' WHERE username = '$username'");
-          $x++;
-      }
-      return $x;
+          $query = $this->link->query("UPDATE todo SET title = '$title', description = '$desc', progress = '$progress', due_date = '$due_date', label = '$label' WHERE username = '$username' AND id = '$id'");
+          $counts = $query->rowCount();
+          return $counts;
     }
 
     function deleteTodo($username, $id)
     {
-      $query = $this->link->query("DELETE FROM todo WHERE username = 'username' AND id='$id'");
+      $query = $this->link->query("DELETE FROM todo WHERE username = '$username' AND id='$id'");
       $counts = $query->rowCount();
       return $counts;
+    }
+
+    function listIndTodo($param, $username)
+    {
+      foreach ($param as $key => $value) {
+          $query = $this->link->query("SELECT * FROM todo WHERE $key = '$value' AND username = '$username'");
+      }
+      $counts = $query->rowCount();
+      if ($counts == 1)
+      {
+        $result = $query->fetchall();
+      }
+      else
+      {
+          $result = $counts;
+      }
+      return $result;
     }
   }
 ?>
