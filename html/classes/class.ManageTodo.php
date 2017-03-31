@@ -1,7 +1,7 @@
 <?php
   include_once('class.database.php');
 
-  class ManageUsers {
+  class ManageTodo {
     public $link;
 
     function __construct() {
@@ -10,18 +10,25 @@
       return $this->link;
     }
 
-    function createTodo($username, $title, $description, $due_date, $created_on, $status)
+    function createTodo($username, $title, $description, $due_date, $created_on, $label)
     {
-      $query = $this->link->prepare("INSERT INTO todo (username, title, desc, due_date, created_date, status) VALUES (?,?,?,?,?,?)");
-      $values = array($username, $title, $description, $due_date, $created_on, $status);
+      $query = $this->link->prepare("INSERT INTO todo (username, title, description, due_date, created_date, label) VALUES (?,?,?,?,?,?)");
+      $values = array($username, $title, $description, $due_date, $created_on, $label);
       $query->execute($values);
-      $counts = $query->rowCounts()
+      $counts = $query->rowCount();
       return $counts;
     }
 
-    function listTodo($username, $status)
+    function listTodo($username, $label=null)
     {
-      $query = $this->link->query("SELECT * FROM todo WHERE username = '$username' AND status = '$status'");
+      if(isset($label))
+      {
+          $query = $this->link->query("SELECT * FROM todo WHERE username = '$username' AND label = '$label' ORDER BY id DESC");
+      }
+      else
+      {
+          $query = $this->link->query("SELECT * FROM todo WHERE username = '$username' ORDER BY id DESC");
+      }
       $counts = $query->rowCount();
       if($counts >= 1)
       {
@@ -34,9 +41,9 @@
       return $result;
     }
 
-    function countTodo($username, $status)
+    function countTodo($username, $label)
     {
-      $query = $this->link->query("SELECT count(*) AS TOTAL_TODO FROM todo WHERE username = '$username' AND status = '$status' ");
+      $query = $this->link->query("SELECT count(*) AS TOTAL_TODO FROM todo WHERE username = '$username' AND label = '$label'");
       $query->setFetchMode(PDO::FETCH_OBJ);
       $counts = $query->fetchAll();
       return $counts;

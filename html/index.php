@@ -1,4 +1,7 @@
-      <?php include_once('statics/header.php'); ?>
+      <?php
+        include_once('statics/header.php');
+        include_once('libs/list_todo.php');
+      ?>
           <div class="container-body">
             <div class="head-content">
               <div class="head clearfix">
@@ -23,21 +26,56 @@
               </thead>
               <tbody>
                 <tr>
-                  <td> Todo </td>
-                  <td> Should complete it </td>
-                  <td> 2017-03-30 </td>
-                  <td> 18hours </td>
-                  <td>
-                    <div class="progress">
-                      <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-                        <span class="sr-only">60% Complete</span>
-                      </div>
-                    </div>
-                  </td>
-                  <td> edit | delete </td>
+
+                   <?php
+                     if($list_todo !== 0)
+                     {
+                       foreach ($list_todo as $key => $value)
+                       {
+                           $today = strtotime("now");
+                           $due_date = strtotime($value['due_date']);
+                           if($due_date > $today)
+                           {
+                             $hours = $due_date - $today;
+                             $hours = $hours / 3600;
+                             $time_left = $hours /24;
+                             if($time_left < 1)
+                             {
+                               $time_left = 'Less than 1 day';
+                             }
+                             else
+                             {
+                               $time_left = round($time_left) . ' days remaining';
+                             }
+                           }
+                           else
+                           {
+                             $time_left = 'Expired';
+                           }
+                         ?>
+                           <td> <?php echo $value['title'] ?> </td>
+                           <td> <?php echo $value['description'] ?> </td>
+                           <td> <?php echo $value['due_date'] ?> </td>
+                           <td> <?php echo $time_left ?> </td>
+                           <td>
+                             <div class="progress">
+                               <div class="progress-bar" role="progressbar" aria-valuenow="<?php echo $value['progress']?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $value['progress']?>%;">
+                                 <span class="sr-only"><?php echo $value['progress']?>% Complete</span>
+                               </div>
+                             </div>
+                           </td>
+                           <td> edit | delete </td>
+                           </tr>
+                           <?php
+                       }
+                     }
+                     else
+                     {
+                        echo '<td colspan=6>Sorry no more todos under this section</td>';
+                     }
+                    ?>
 
               </tbody>
-
             </table>
           </div>
       </div>

@@ -1,3 +1,4 @@
+<?php include_once('libs/session.php'); ?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -9,18 +10,25 @@
 			  src="https://code.jquery.com/jquery-3.2.1.min.js"
 			  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
 			  crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/style.css">
     <title>Todo Maker</title>
-  </head>
-  <body>
+    <link rel="stylesheet" href="/css/jquery-ui.css">
+    <script type="text/javascript" src="/js/jquery-ui.js"></script>
+    <script>
+      $( function() {
+        $( "#due_date" ).datepicker({
+          dateFormat: "yy-mm-dd"
+        });
+      });
+    </script>
 <div class="index-wrapper">
     <div class="content">
       <h2><strong>To</strong>do<strong>Ma</strong>ker</h2>
     </div>
     <div class="container menu">
       <ul class="nav nav-pills nav-stacked">
-        <li role="navigation" class="active"><a href="#">Inbox</a></li>
-        <li role="navigation"><a href="#">Read Later</a></li>
-        <li role="navigation"><a href="#">Important</a></li>
+        <li role="navigation" <?php if($_GET['label'] == 'Inbox') { echo 'class="active"'; } ?>><a href="index.php?label=Inbox">Inbox</a></li>
+        <li role="navigation" <?php if($_GET['label'] == 'Read Later') { echo 'class="active"'; } ?>><a href="index.php?label=Read Later">Read Later</a></li>
+        <li role="navigation" <?php if($_GET['label'] == 'Important') { echo 'class="active"'; } ?>><a href="index.php?label=Important">Important</a></li>
       </ul>
     </div>
